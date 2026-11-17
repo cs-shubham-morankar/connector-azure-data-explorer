@@ -17,7 +17,6 @@ logger = get_logger('azure-data-explorer')
 def kusto_request(method, endpoint, connector_info, config, json_body=None, params=None):
     try:
         ms = MicrosoftAuth(config)
-        # the kusto cluster uri is used as the token audience/resource
         endpoint = ms.host + endpoint
         token = ms.validate_token(config, connector_info)
         headers = {
@@ -216,8 +215,6 @@ def get_table_details(config, params, connector_info):
     using the .show table <TableName> cslschema control command.
     """
     table_name = params.get('table')
-    if not table_name:
-        raise ConnectorError("Table parameter is required")
     params = dict(params)
     params['query'] = ".show table {0} cslschema".format(table_name)
     return run_management_command(config, params, connector_info)
@@ -229,8 +226,6 @@ def get_table_data(config, params, connector_info):
     and record count limits.
     """
     table_name = params.get('table')
-    if not table_name:
-        raise ConnectorError("Table parameter is required")
     query = table_name
     time_column = params.get('time_column')
     time_from = params.get('time_from')
@@ -275,8 +270,6 @@ def ingest_inline_data(config, params, connector_info):
     """
     table_name = params.get('table')
     csv_data = params.get('csv_data')
-    if not table_name or not csv_data:
-        raise ConnectorError("Table and CSV Data parameters are required")
     query = ".ingest inline into table {0} <| {1}".format(table_name, csv_data)
     payload = {
         'db': params.get('database'),
@@ -299,8 +292,6 @@ def delete_table_data(config, params, connector_info):
     """
     table_name = params.get('table')
     predicate = params.get('predicate')
-    if not table_name or not predicate:
-        raise ConnectorError("Table and Predicate parameters are required")
     predicate = predicate.strip()
     query = ".delete table {0} records <| {0} | {1}".format(table_name, predicate)
     payload = {
@@ -318,8 +309,6 @@ def delete_table(config, params, connector_info):
     Deletes a table and its data from the database using the .drop table control command.
     """
     table_name = params.get('table')
-    if not table_name:
-        raise ConnectorError("Table parameter is required")
     query = ".drop table {0}".format(table_name)
     payload = {
         'db': params.get('database'),

@@ -39,10 +39,7 @@ class MicrosoftAuth:
         if self.auth_type == AUTH_BEHALF_OF_USER:
             self.refresh_token = ""
             self.code = config.get("code")
-            if not config.get("redirect_uri"):
-                self.redirect_url = DEFAULT_REDIRECT_URL
-            else:
-                self.redirect_url = config.get("redirect_uri")
+            self.redirect_url = config.get("redirect_uri")
 
     def convert_ts_epoch(self, ts):
         datetime_object = datetime.strptime(ctime(ts), "%a %b %d %H:%M:%S %Y")

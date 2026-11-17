@@ -9,13 +9,9 @@ REFRESH_TOKEN_FLAG = False
 
 AUTH_USING_APP = "Without a User - Application Permission"
 AUTH_BEHALF_OF_USER = "On behalf of User - Delegate Permission"
-CERTIFICATE_BASED_AUTH_TYPE = "Certificate Based Authentication"
 
 # API Version (Azure Resource Manager)
 API_VERSION = "2025-02-14"
-
-# redirect url
-DEFAULT_REDIRECT_URL = 'https://localhost/myapp'
 
 # grant types
 AUTHORIZATION_CODE = 'authorization_code'
